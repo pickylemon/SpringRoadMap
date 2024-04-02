@@ -55,6 +55,8 @@ public class MemberRepositoryV0 {
             pstmt = con.prepareStatement(sql);
             pstmt.setString(1, memberId);
             rs = pstmt.executeQuery();
+            //여기서는 pk를 콕찝어서 조회한거라 반환되는 row가 1 또는 0이다.
+            //만약 여러개를 조회하면 while문을 돌린다.
             if(rs.next()){ //커서를 움직이기 위해 최초 한번은 호출해주어야 한다.
                 Member member = new Member();
                 member.setMemberId(rs.getString("member_id"));
@@ -68,6 +70,44 @@ public class MemberRepositoryV0 {
             throw e;
         } finally {
             close(con, pstmt, rs);
+        }
+    }
+
+    public void update(String memberId, int money) throws SQLException {
+        String sql = "update member set money=? where member_id=?";
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        try{
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, money);
+            pstmt.setString(2, memberId);
+            int resultSize = pstmt.executeUpdate();
+            log.info("resultSize={}", resultSize);
+        } catch(SQLException e) {
+            log.error("error", e);
+            throw e;
+        } finally {
+            close(con, pstmt, null);
+        }
+    }
+
+    public void delete(String memberId) throws SQLException {
+        String sql = "delete from member where member_id=?";
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        try{
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, memberId);
+            int resultSize = pstmt.executeUpdate();
+            log.info("resultSize={}", resultSize);
+        } catch(SQLException e) {
+            log.error("error", e);
+            throw e;
+        } finally {
+            close(con, pstmt, null);
         }
     }
 
