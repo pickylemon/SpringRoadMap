@@ -3,16 +3,26 @@ package hello.itemservice.domain;
 import hello.itemservice.repository.ItemRepository;
 import hello.itemservice.repository.ItemSearchCond;
 import hello.itemservice.repository.ItemUpdateDto;
+import hello.itemservice.repository.jdbctemplate.JdbcTemplateItemRepositoryV3;
 import hello.itemservice.repository.memory.MemoryItemRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
+@Slf4j
+@Transactional
 @SpringBootTest
 public class ItemRepositoryTest {
     //인터페이스를 테스트해야 구현체를 바꿔도 같은 테스트로 검증 가능.
@@ -20,12 +30,26 @@ public class ItemRepositoryTest {
     @Autowired
     ItemRepository itemRepository;
 
+//    @Autowired
+//    PlatformTransactionManager transactionManager;
+//    TransactionStatus status;
+
+//    @BeforeEach //각 테스트 실행 전에 Tx시작
+//    void beforeEach(){
+//        status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+//        log.info("\n\ntransactionManager={}]\n\n",transactionManager);
+//    }
+
     @AfterEach
     void afterEach(){
-        //인터페이스에는 clearStore() 메서드가 없어서
+        //인터페이스에는 clearStore() 메서드가 없어서.
+        //MemoryItemRepository 경우에만 해당
         if(itemRepository instanceof MemoryItemRepository) {
             ((MemoryItemRepository)itemRepository).clearStore();
         }
+
+        //Tx 롤백
+       // transactionManager.rollback(status);
     }
 
     @Test
@@ -57,6 +81,7 @@ public class ItemRepositoryTest {
     }
 
     @Test
+    //@Commit
     void findItems(){
         //given
         Item item1 = new Item("itemA-1", 10000, 10);

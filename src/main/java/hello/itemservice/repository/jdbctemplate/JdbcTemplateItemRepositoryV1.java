@@ -85,6 +85,9 @@ public class JdbcTemplateItemRepositoryV1 implements ItemRepository {
         }
     }
 
+    //rowMapper는 functional Interface다.
+    // T mapRow(ResultSet rs, int rowNum)
+
     private RowMapper<Item> itemRowMapper() {
         return ((rs, rowNum) -> {
             Item item = new Item();
