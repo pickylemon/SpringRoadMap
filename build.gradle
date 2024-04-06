@@ -8,6 +8,9 @@ group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+ext["hibernate.version"] = "5.6.5.Final"
+//5.6.7버전에 버그가 있어서 버전을 다운 그레이드
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
@@ -23,12 +26,16 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 //	//JdbcTemplate 추가
 //	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
 	//MyBatis 추가
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
 	//부트 3.2이상 쓸 경우에는, implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 
 	//JPA, 스프링 데이터 JPA 추가
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+
+
 
 	//H2 데이터베이스 추가
 	runtimeOnly 'com.h2database:h2'

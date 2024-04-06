@@ -64,6 +64,7 @@ public class ItemRepositoryTest {
     }
 
     @Test
+    //@Commit //실제 jpql을 볼 수 있다.
     void updateItem(){
         //given
         Item item = new Item("itemA", 10000, 10);
@@ -83,6 +84,8 @@ public class ItemRepositoryTest {
     @Test
     //@Commit
     void findItems(){
+
+        log.info("\n\n itemRepository={}, class={}\n\n", itemRepository, itemRepository.getClass());
         //given
         Item item1 = new Item("itemA-1", 10000, 10);
         Item item2 = new Item("itemA-2", 20000, 20);
