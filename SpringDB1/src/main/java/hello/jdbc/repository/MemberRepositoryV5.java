@@ -16,7 +16,6 @@ import java.util.NoSuchElementException;
 
 /**
  * JDBCTemplate을 사용해서 반복 코드를 제거하기
- *
  */
 @Slf4j
 public class MemberRepositoryV5 implements MemberRepository{
